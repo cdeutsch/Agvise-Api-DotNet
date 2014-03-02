@@ -1,4 +1,5 @@
-﻿using RestSharp;
+﻿using Agvise.Api.Models;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,17 +21,32 @@ namespace Agvise.Api
             _client.Authenticator = new HttpBasicAuthenticator(apiKey, null);
         }
 
-        public string GetSampleSubmission(long id)
+        public SubmittedSampleOrder GetSampleSubmission(long sampleOrderID)
         {
             var request = new RestRequest("samples/submit/{id}");
-            request.AddUrlSegment("id", id.ToString());
+            request.AddUrlSegment("id", sampleOrderID.ToString());
             request.Method = Method.GET;
 
-            var response = _client.Execute(request);
+            var response = _client.Execute<ApiResponse<SubmittedSampleOrder>>(request);
 
             response.ThrowExceptionsForErrors();
+            response.Data.Error.ThrowExceptionsForErrors();
 
-            return response.Content;
+            return response.Data.Data;
+        }
+
+        public SubmittedSampleOrder SubmitSample(SampleOrder sampleOrder)
+        {
+            var request = new RestRequest("samples/submit");
+            request.Method = Method.POST;
+            request.AddBody(sampleOrder);
+
+            var response = _client.Execute<ApiResponse<SubmittedSampleOrder>>(request);
+
+            response.ThrowExceptionsForErrors();
+            response.Data.Error.ThrowExceptionsForErrors();
+
+            return response.Data.Data;
         }
 
         public RestClient RestClient
