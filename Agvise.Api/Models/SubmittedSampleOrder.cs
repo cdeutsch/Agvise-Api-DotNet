@@ -9,9 +9,6 @@ namespace Agvise.Api.Models
 {
     public class SubmittedSampleOrder : SampleOrder
     {
-        [Key]
-        public long SampleOrderID { get; set; }
-
         [Display(Name = "Submitter Name")]
         [StringLength(250)]
         public string SubmitterName { get; set; }
@@ -60,7 +57,5 @@ namespace Agvise.Api.Models
 
         public DateTime Created { get; set; }
 
-
-        public new List<SubmittedSample> Samples { get; set; } // the new keyword, hides the base SampleOrder version
     }
 }

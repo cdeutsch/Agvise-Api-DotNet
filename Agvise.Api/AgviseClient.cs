@@ -10,7 +10,7 @@ namespace Agvise.Api
 {
     public class AgviseClient
     {
-        public static string BaseUrl = "http://localhost:49375/api/";
+        public static string BaseUrl = "https://submit.agvise.com/api/";
         public static string Resource = "content/item.js?nonce={nonce}";
 
         private readonly RestClient _client;

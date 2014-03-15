@@ -9,6 +9,14 @@ namespace Agvise.Api.Models
 {
     public class Sample
     {
+        /// <summary>
+        /// Primary key of the Sample
+        /// <remarks>Only set this to a non-zero value if you're doing an edit.</remarks>
+        /// </summary>
+        [Display(Name = "Reference Number")]
+        [Key]
+        public long ReferenceNumber { get; set; }
+
         [Display(Name = "Sample ID")]
         [StringLength(50)]
         public string SampleIdentifier { get; set; }

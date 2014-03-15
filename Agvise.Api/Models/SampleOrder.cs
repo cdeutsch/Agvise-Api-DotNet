@@ -9,6 +9,13 @@ namespace Agvise.Api.Models
 {
     public class SampleOrder
     {
+        /// <summary>
+        /// Primary key of the SampleOrder
+        /// <remarks>Only set this to a non-zero value if you're doing an edit.</remarks>
+        /// </summary>
+        [Key]
+        public long SampleOrderID { get; set; }
+
         public short SampleOrderType { get; set; }
 
         [Display(Name = "Customer Account Number")]
