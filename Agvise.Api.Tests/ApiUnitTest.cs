@@ -19,6 +19,13 @@ namespace Agvise.Api.Tests
         [TestMethod]
         public void TestGetSampleSubmission()
         {
+            var submittedSampleOrder = client.GetSampleSubmission(20287);
+
+        }
+
+        [TestMethod]
+        public void TestSubmitSample()
+        {
             var sampleOrder = new SampleOrder()
             {
                 SampleOrderType = 2,
@@ -58,18 +65,18 @@ namespace Agvise.Api.Tests
                     {
                         SampleIdentifier = "111",
                         UniqueIdentifier = "222",
-                        AnalysisOptionsOverride = "DEALER DEFAULT",
-                        AdditionalAnalysisOptionsOverride = new List<string>() 
+                        AnalysisOptions = "DEALER DEFAULT",
+                        AdditionalAnalysisOptions = new List<string>() 
                         { 
                             "Phosphorus",
                             "Potassium"
                         },
-                        PhosphorusOptionOverride = "",
-                        Depth1Override = 24,
-                        Depth2Override = 48,
-                        //Depth3Override = 64,
-                        //Depth4Override = 82,
-                        StartingDepthOf2ndOverride = 24,
+                        PhosphorusOption = "",
+                        Depth1 = 24,
+                        Depth2 = 48,
+                        //Depth3 = 64,
+                        //Depth4 = 82,
+                        StartingDepthOf2nd = 24,
                         Acres = "100",
                         PreviousCrop = "Canola-bu",
                         YieldGoal1Override = "90",
@@ -142,23 +149,23 @@ namespace Agvise.Api.Tests
                 Assert.IsNull(actualSample);
                 Assert.AreEqual(expectedSample.SampleIdentifier, actualSample.SampleIdentifier);
                 Assert.AreEqual(expectedSample.UniqueIdentifier, actualSample.UniqueIdentifier);
-                Assert.AreEqual(expectedSample.AnalysisOptionsOverride, actualSample.AnalysisOptionsOverride);
-                Assert.AreEqual(expectedSample.PhosphorusOptionOverride, actualSample.PhosphorusOptionOverride);
-                Assert.AreEqual(expectedSample.Depth1Override, actualSample.Depth1Override);
-                Assert.AreEqual(expectedSample.Depth2Override, actualSample.Depth2Override);
-                Assert.AreEqual(expectedSample.Depth3Override, actualSample.Depth3Override);
-                Assert.AreEqual(expectedSample.Depth4Override, actualSample.Depth4Override);
-                Assert.AreEqual(expectedSample.StartingDepthOf2ndOverride, actualSample.StartingDepthOf2ndOverride);
+                Assert.AreEqual(expectedSample.AnalysisOptions, actualSample.AnalysisOptions);
+                Assert.AreEqual(expectedSample.PhosphorusOption, actualSample.PhosphorusOption);
+                Assert.AreEqual(expectedSample.Depth1, actualSample.Depth1);
+                Assert.AreEqual(expectedSample.Depth2, actualSample.Depth2);
+                Assert.AreEqual(expectedSample.Depth3, actualSample.Depth3);
+                Assert.AreEqual(expectedSample.Depth4, actualSample.Depth4);
+                Assert.AreEqual(expectedSample.StartingDepthOf2nd, actualSample.StartingDepthOf2nd);
                 Assert.AreEqual(expectedSample.Acres, actualSample.Acres);
                 Assert.AreEqual(expectedSample.PreviousCrop, actualSample.PreviousCrop);
                 Assert.AreEqual(expectedSample.YieldGoal1Override, actualSample.YieldGoal1Override);
                 Assert.AreEqual(expectedSample.YieldGoal2Override, actualSample.YieldGoal2Override);
                 Assert.AreEqual(expectedSample.YieldGoal3Override, actualSample.YieldGoal3Override);
                 Assert.AreEqual(expectedSample.ElectronicNumber, actualSample.ElectronicNumber);
-                Assert.AreEqual(expectedSample.AdditionalAnalysisOptionsOverride.Count, actualSample.AdditionalAnalysisOptionsOverride.Count);
-                for (int xx = 0; xx < expectedSample.AdditionalAnalysisOptionsOverride.Count; xx++)
+                Assert.AreEqual(expectedSample.AdditionalAnalysisOptions.Count, actualSample.AdditionalAnalysisOptions.Count);
+                for (int xx = 0; xx < expectedSample.AdditionalAnalysisOptions.Count; xx++)
                 {
-                    Assert.AreEqual(expectedSample.AdditionalAnalysisOptionsOverride[xx], actualSample.AdditionalAnalysisOptionsOverride[xx]);
+                    Assert.AreEqual(expectedSample.AdditionalAnalysisOptions[xx], actualSample.AdditionalAnalysisOptions[xx]);
                 }
 
                 Assert.IsTrue(actualSample.ReferenceNumber > 0);

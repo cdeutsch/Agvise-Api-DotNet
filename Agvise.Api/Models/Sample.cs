@@ -27,29 +27,29 @@ namespace Agvise.Api.Models
 
         [Display(Name = "Analysis Options")]
         [StringLength(1000)]
-        public string AnalysisOptionsOverride { get; set; }
+        public string AnalysisOptions { get; set; }
 
         [Display(Name = "Additional Analysis Options")]
-        public List<string> AdditionalAnalysisOptionsOverride { get; set; }
+        public List<string> AdditionalAnalysisOptions { get; set; }
 
         [Display(Name = "Phosphorus Option")]
         [StringLength(500)]
-        public string PhosphorusOptionOverride { get; set; }
+        public string PhosphorusOption { get; set; }
 
         [Display(Name = "Depth 1")]
-        public int? Depth1Override { get; set; }
+        public int? Depth1 { get; set; }
 
         [Display(Name = "Depth 2")]
-        public int? Depth2Override { get; set; }
+        public int? Depth2 { get; set; }
 
         [Display(Name = "Depth 3")]
-        public int? Depth3Override { get; set; }
+        public int? Depth3 { get; set; }
 
         [Display(Name = "Depth 4")]
-        public int? Depth4Override { get; set; }
+        public int? Depth4 { get; set; }
 
         [Display(Name = "Starting Depth Of 2nd")]
-        public int? StartingDepthOf2ndOverride { get; set; }
+        public int? StartingDepthOf2nd { get; set; }
 
         [StringLength(50)]
         public string Acres { get; set; }
