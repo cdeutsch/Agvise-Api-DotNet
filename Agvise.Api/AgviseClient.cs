@@ -24,6 +24,7 @@ namespace Agvise.Api
         public SubmittedSampleOrder GetSampleSubmission(long sampleOrderID)
         {
             var request = new RestRequest("samples/submit/{id}");
+            request.RequestFormat = DataFormat.Json;
             request.AddUrlSegment("id", sampleOrderID.ToString());
             request.Method = Method.GET;
 
@@ -38,6 +39,7 @@ namespace Agvise.Api
         public SubmittedSampleOrder SubmitSample(SampleOrder sampleOrder)
         {
             var request = new RestRequest("samples/submit");
+            request.RequestFormat = DataFormat.Json;
             request.Method = Method.POST;
             request.AddBody(sampleOrder);
 

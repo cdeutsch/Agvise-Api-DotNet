@@ -19,8 +19,8 @@ namespace Agvise.Api.Tests
         [TestMethod]
         public void TestGetSampleSubmission()
         {
-            var submittedSampleOrder = client.GetSampleSubmission(20287);
-
+            var submittedSampleOrder = client.GetSampleSubmission(20294);
+            Assert.IsNotNull(submittedSampleOrder.PKApplication1);
         }
 
         [TestMethod]
@@ -29,7 +29,7 @@ namespace Agvise.Api.Tests
             var sampleOrder = new SampleOrder()
             {
                 SampleOrderType = 2,
-                CustomerAccountNumber = "XX0001",
+                CustomerAccountNumber = "XX0001", // TODO: change to your account number
                 GrowerName = "ABC Grower Name",
                 GrowerAddress1 = "123 Fake St",
                 GrowerAddress2 = "Suite 650",
@@ -83,6 +83,29 @@ namespace Agvise.Api.Tests
                         YieldGoal2Override = "20",
                         YieldGoal3Override = "80",
                         ElectronicNumber = "98765",
+                    },
+                    new Sample() 
+                    {
+                        SampleIdentifier = "112",
+                        UniqueIdentifier = "223",
+                        AnalysisOptions = "DEALER DEFAULT",
+                        AdditionalAnalysisOptions = new List<string>() 
+                        { 
+                            "Phosphorus",
+                            "Potassium"
+                        },
+                        PhosphorusOption = "",
+                        Depth1 = 24,
+                        Depth2 = 48,
+                        //Depth3 = 64,
+                        //Depth4 = 82,
+                        StartingDepthOf2nd = 24,
+                        Acres = "100",
+                        PreviousCrop = "Canola-bu",
+                        YieldGoal1Override = "90",
+                        YieldGoal2Override = "20",
+                        YieldGoal3Override = "80",
+                        ElectronicNumber = "98765",
                     }
                 }
             };
@@ -105,8 +128,8 @@ namespace Agvise.Api.Tests
             Assert.AreEqual(submittedSampleOrder.UpdatedByAccountNumber, submittedSampleOrder2.UpdatedByAccountNumber);
             Assert.AreEqual(submittedSampleOrder.Printed, submittedSampleOrder2.Printed);
             Assert.AreEqual(submittedSampleOrder.Received, submittedSampleOrder2.Received);
-            Assert.AreEqual(submittedSampleOrder.Updated, submittedSampleOrder2.Updated);
-            Assert.AreEqual(submittedSampleOrder.Created, submittedSampleOrder2.Created);
+            Assert.AreEqual(submittedSampleOrder.Updated.ToUniversalTime().ToString(), submittedSampleOrder2.Updated.ToUniversalTime().ToString());
+            Assert.AreEqual(submittedSampleOrder.Created.ToUniversalTime().ToString(), submittedSampleOrder2.Created.ToUniversalTime().ToString());
 
         }
 
@@ -122,7 +145,7 @@ namespace Agvise.Api.Tests
             Assert.AreEqual(expected.GrowerPostalCode, actual.GrowerPostalCode);
             Assert.AreEqual(expected.GrowerAccountNumber, actual.GrowerAccountNumber);
             Assert.AreEqual(expected.GrowerSampler, actual.GrowerSampler);
-            Assert.AreEqual(expected.SampleDate, actual.SampleDate);
+            Assert.AreEqual(expected.SampleDate.Value.ToUniversalTime().ToString(), actual.SampleDate.Value.ToUniversalTime().ToString());
             Assert.AreEqual(expected.FieldIdentifier, actual.FieldIdentifier);
             Assert.AreEqual(expected.FieldName, actual.FieldName);
             Assert.AreEqual(expected.FieldCounty, actual.FieldCounty);
@@ -146,7 +169,7 @@ namespace Agvise.Api.Tests
             foreach (var expectedSample in expected.Samples)
             {
                 var actualSample = actual.Samples.FirstOrDefault(oo => oo.SampleIdentifier == expectedSample.SampleIdentifier);
-                Assert.IsNull(actualSample);
+                Assert.IsNotNull(actualSample);
                 Assert.AreEqual(expectedSample.SampleIdentifier, actualSample.SampleIdentifier);
                 Assert.AreEqual(expectedSample.UniqueIdentifier, actualSample.UniqueIdentifier);
                 Assert.AreEqual(expectedSample.AnalysisOptions, actualSample.AnalysisOptions);
