@@ -30,8 +30,7 @@ namespace Agvise.Api
 
             var response = _client.Execute<ApiResponse<SubmittedSampleOrder>>(request);
 
-            response.ThrowExceptionsForErrors();
-            response.Data.Error.ThrowExceptionsForErrors();
+            response.ThrowExceptionsForErrors<SubmittedSampleOrder>();
 
             return response.Data.Data;
         }
@@ -45,8 +44,7 @@ namespace Agvise.Api
 
             var response = _client.Execute<ApiResponse<SubmittedSampleOrder>>(request);
 
-            response.ThrowExceptionsForErrors();
-            response.Data.Error.ThrowExceptionsForErrors();
+            response.ThrowExceptionsForErrors<SubmittedSampleOrder>();
 
             return response.Data.Data;
         }

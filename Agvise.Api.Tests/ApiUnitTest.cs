@@ -34,7 +34,7 @@ namespace Agvise.Api.Tests
                 GrowerAddress1 = "123 Fake St",
                 GrowerAddress2 = "Suite 650",
                 GrowerCity = "Grand Forks",
-                GrowerState = "ND",
+                GrowerState = "XX",
                 GrowerPostalCode = "22222",
                 GrowerAccountNumber = "0123456789",
                 GrowerSampler = "Sampler 123",
@@ -51,34 +51,34 @@ namespace Agvise.Api.Tests
                 //ManureApplied = true,
                 CropSelection1 = "Barley",
                 YieldGoal1 = "90",
-                PKApplication1 = "University",
+                PKApplication1 = "INVALID",
                 CropSelection2 = "S. Beets 6 lbs",
                 YieldGoal2 = "20",
                 PKApplication2 = "Broadcast",
                 CropSelection3 = "Barley-Feed",
                 YieldGoal3 = "80",
                 PKApplication3 = "Broadcast/Maint",
-                
+
                 Samples = new List<Sample>()
                 {
                     new Sample() 
                     {
                         SampleIdentifier = "111",
                         UniqueIdentifier = "222",
-                        AnalysisOptions = "DEALER DEFAULT",
+                        AnalysisOptions = "INVALID",
                         AdditionalAnalysisOptions = new List<string>() 
                         { 
-                            "Phosphorus",
+                            "INVALID",
                             "Potassium"
                         },
-                        PhosphorusOption = "",
+                        PhosphorusOption = "INVALID",
                         Depth1 = 24,
                         Depth2 = 48,
                         //Depth3 = 64,
                         //Depth4 = 82,
                         StartingDepthOf2nd = 24,
                         Acres = "100",
-                        PreviousCrop = "Canola-bu",
+                        PreviousCrop = "INVALID",
                         YieldGoal1Override = "90",
                         YieldGoal2Override = "20",
                         YieldGoal3Override = "80",
@@ -109,6 +109,24 @@ namespace Agvise.Api.Tests
                     }
                 }
             };
+
+            try
+            {
+                var try1 = client.SubmitSample(sampleOrder);
+            }
+            catch (ApiException exp)
+            {
+                Assert.IsNotNull(exp.ApiError.ValidationErrors);
+                Assert.IsTrue(exp.ApiError.ValidationErrors.Count == 5);
+            }
+
+            // fix errors.
+            sampleOrder.GrowerState = "ND";
+            sampleOrder.PKApplication1 = "University";
+            sampleOrder.Samples[0].AnalysisOptions = "DEALER DEFAULT";
+            sampleOrder.Samples[0].AdditionalAnalysisOptions[0] = "Phosphorus";
+            sampleOrder.Samples[0].PhosphorusOption = "";
+            sampleOrder.Samples[0].PreviousCrop = "Canola-bu";
 
             var submittedSampleOrder = client.SubmitSample(sampleOrder);
             RunSampleOrderAsserts(sampleOrder, submittedSampleOrder);

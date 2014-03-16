@@ -23,27 +23,27 @@ namespace Agvise.Api.Models
         public string CustomerAccountNumber { get; set; }
 
         [Display(Name = "Grower Name")]
-        [StringLength(250)]
+        [StringLength(25)]
         public string GrowerName { get; set; }
 
         [Display(Name = "Grower Address")]
-        [StringLength(250)]
+        [StringLength(20)]
         public string GrowerAddress1 { get; set; }
 
         [Display(Name = "Grower Address 2")]
-        [StringLength(250)]
+        [StringLength(20)]
         public string GrowerAddress2 { get; set; }
 
         [Display(Name = "Grower City")]
-        [StringLength(250)]
+        [StringLength(22)]
         public string GrowerCity { get; set; }
 
         [Display(Name = "Grower State")]
-        [StringLength(5)]
+        [StringLength(2)]
         public string GrowerState { get; set; }
 
         [Display(Name = "Grower Zip")]
-        [StringLength(20)]
+        [StringLength(11)]
         public string GrowerPostalCode { get; set; }
 
         [Display(Name = "Grower Account Number")]
@@ -51,37 +51,37 @@ namespace Agvise.Api.Models
         public string GrowerAccountNumber { get; set; }
 
         [Display(Name = "Grower Sampler")]
-        [StringLength(250)]
+        [StringLength(25)]
         public string GrowerSampler { get; set; }
 
         [Display(Name = "Sample Date")]
         public DateTime? SampleDate { get; set; }
 
         [Display(Name = "Field ID")]
-        [StringLength(50)]
+        [StringLength(30)]
         public string FieldIdentifier { get; set; }
 
         [Display(Name = "Field Name")]
-        [StringLength(250)]
+        [StringLength(40)]
         public string FieldName { get; set; }
 
         [Display(Name = "County")]
-        [StringLength(250)]
+        [StringLength(15)]
         public string FieldCounty { get; set; }
 
         [Display(Name = "Range")]
-        [StringLength(250)]
+        [StringLength(15)]
         public string FieldRange { get; set; }
 
         [Display(Name = "Township")]
-        [StringLength(250)]
+        [StringLength(15)]
         public string FieldTownship { get; set; }
 
         [Display(Name = "Section")]
         public int? FieldSection { get; set; }
 
         [Display(Name = "Quarter")]
-        [StringLength(250)]
+        [StringLength(15)]
         public string FieldQuarter { get; set; }
 
         [Display(Name = "Total Acres")]

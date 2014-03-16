@@ -18,7 +18,7 @@ namespace Agvise.Api.Models
         public long ReferenceNumber { get; set; }
 
         [Display(Name = "Sample ID")]
-        [StringLength(50)]
+        [StringLength(30)]
         public string SampleIdentifier { get; set; }
 
         [Display(Name = "Unique ID")]
