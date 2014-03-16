@@ -117,7 +117,7 @@ namespace Agvise.Api.Tests
             catch (ApiException exp)
             {
                 Assert.IsNotNull(exp.ApiError.ValidationErrors);
-                Assert.IsTrue(exp.ApiError.ValidationErrors.Count == 5);
+                Assert.IsTrue(exp.ApiError.ValidationErrors.Count == 6);
             }
 
             // fix errors.
