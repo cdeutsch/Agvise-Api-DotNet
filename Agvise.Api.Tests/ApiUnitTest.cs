@@ -29,7 +29,6 @@ namespace Agvise.Api.Tests
             var sampleOrder = new SampleOrder()
             {
                 SampleOrderType = SampleOrderType.GridZone,
-                CustomerAccountNumber = "XX0001", // TODO: change to your account number
                 GrowerName = "ABC Grower Name",
                 GrowerAddress1 = "123 Fake St",
                 GrowerAddress2 = "Suite 650",
@@ -134,6 +133,7 @@ namespace Agvise.Api.Tests
             var submittedSampleOrder2 = client.GetSampleSubmission(submittedSampleOrder.SampleOrderID);
             RunSampleOrderAsserts(sampleOrder, submittedSampleOrder);
 
+            Assert.AreEqual(submittedSampleOrder.CustomerAccountNumber, submittedSampleOrder2.CustomerAccountNumber);
             Assert.AreEqual(submittedSampleOrder.SubmitterName, submittedSampleOrder2.SubmitterName);
             Assert.AreEqual(submittedSampleOrder.SubmitterAddress1, submittedSampleOrder2.SubmitterAddress1);
             Assert.AreEqual(submittedSampleOrder.SubmitterAddress2, submittedSampleOrder2.SubmitterAddress2);
@@ -154,7 +154,6 @@ namespace Agvise.Api.Tests
         private void RunSampleOrderAsserts(SampleOrder expected, SubmittedSampleOrder actual)
         {
             Assert.AreEqual(expected.SampleOrderType, actual.SampleOrderType);
-            Assert.AreEqual(expected.CustomerAccountNumber, actual.CustomerAccountNumber);
             Assert.AreEqual(expected.GrowerName, actual.GrowerName);
             Assert.AreEqual(expected.GrowerAddress1, actual.GrowerAddress1);
             Assert.AreEqual(expected.GrowerAddress2, actual.GrowerAddress2);

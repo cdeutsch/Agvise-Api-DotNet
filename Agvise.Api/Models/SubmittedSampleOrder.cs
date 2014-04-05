@@ -9,6 +9,10 @@ namespace Agvise.Api.Models
 {
     public class SubmittedSampleOrder : SampleOrder
     {
+        [Display(Name = "Customer Account Number")]
+        [StringLength(10)]
+        public string CustomerAccountNumber { get; set; }
+
         [Display(Name = "Submitter Name")]
         [StringLength(250)]
         public string SubmitterName { get; set; }

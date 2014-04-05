@@ -18,10 +18,6 @@ namespace Agvise.Api.Models
 
         public SampleOrderType SampleOrderType { get; set; }
 
-        [Display(Name = "Customer Account Number")]
-        [StringLength(10)]
-        public string CustomerAccountNumber { get; set; }
-
         [Display(Name = "Grower Name")]
         [StringLength(25)]
         public string GrowerName { get; set; }
