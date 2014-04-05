@@ -28,7 +28,7 @@ namespace Agvise.Api.Tests
         {
             var sampleOrder = new SampleOrder()
             {
-                SampleOrderType = 2,
+                SampleOrderType = SampleOrderType.GridZone,
                 CustomerAccountNumber = "XX0001", // TODO: change to your account number
                 GrowerName = "ABC Grower Name",
                 GrowerAddress1 = "123 Fake St",

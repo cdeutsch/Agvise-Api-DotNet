@@ -16,7 +16,7 @@ namespace Agvise.Api.Models
         [Key]
         public long SampleOrderID { get; set; }
 
-        public short SampleOrderType { get; set; }
+        public SampleOrderType SampleOrderType { get; set; }
 
         [Display(Name = "Customer Account Number")]
         [StringLength(10)]
