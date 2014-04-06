@@ -130,24 +130,34 @@ namespace Agvise.Api.Tests
             var submittedSampleOrder = client.SubmitSample(sampleOrder);
             RunSampleOrderAsserts(sampleOrder, submittedSampleOrder);
 
-            var submittedSampleOrder2 = client.GetSampleSubmission(submittedSampleOrder.SampleOrderID);
-            RunSampleOrderAsserts(sampleOrder, submittedSampleOrder);
+            // perform an edit
+            submittedSampleOrder.GrowerCity = "Sioux Falls";
+            submittedSampleOrder.GrowerState = "SD";
+            submittedSampleOrder.GrowerPostalCode = "33333";
+            submittedSampleOrder.Samples[0].SampleIdentifier = "3333";
+            submittedSampleOrder.Samples[0].UniqueIdentifier = "4444";
 
-            Assert.AreEqual(submittedSampleOrder.CustomerAccountNumber, submittedSampleOrder2.CustomerAccountNumber);
-            Assert.AreEqual(submittedSampleOrder.SubmitterName, submittedSampleOrder2.SubmitterName);
-            Assert.AreEqual(submittedSampleOrder.SubmitterAddress1, submittedSampleOrder2.SubmitterAddress1);
-            Assert.AreEqual(submittedSampleOrder.SubmitterAddress2, submittedSampleOrder2.SubmitterAddress2);
-            Assert.AreEqual(submittedSampleOrder.SubmitterCity, submittedSampleOrder2.SubmitterCity);
-            Assert.AreEqual(submittedSampleOrder.SubmitterState, submittedSampleOrder2.SubmitterState);
-            Assert.AreEqual(submittedSampleOrder.SubmitterPostalCode, submittedSampleOrder2.SubmitterPostalCode);
-            Assert.AreEqual(submittedSampleOrder.SubmitterAccountNumber, submittedSampleOrder2.SubmitterAccountNumber);
-            Assert.AreEqual(submittedSampleOrder.SubmitterEmail, submittedSampleOrder2.SubmitterEmail);
-            Assert.AreEqual(submittedSampleOrder.CreatedByAccountNumber, submittedSampleOrder2.CreatedByAccountNumber);
-            Assert.AreEqual(submittedSampleOrder.UpdatedByAccountNumber, submittedSampleOrder2.UpdatedByAccountNumber);
-            Assert.AreEqual(submittedSampleOrder.Printed, submittedSampleOrder2.Printed);
-            Assert.AreEqual(submittedSampleOrder.Received, submittedSampleOrder2.Received);
-            Assert.AreEqual(submittedSampleOrder.Updated.ToUniversalTime().ToString(), submittedSampleOrder2.Updated.ToUniversalTime().ToString());
-            Assert.AreEqual(submittedSampleOrder.Created.ToUniversalTime().ToString(), submittedSampleOrder2.Created.ToUniversalTime().ToString());
+            var submittedSampleOrder2 = client.SubmitSample(submittedSampleOrder);
+            RunSampleOrderAsserts(submittedSampleOrder, submittedSampleOrder2);
+
+            var submittedSampleOrder3 = client.GetSampleSubmission(submittedSampleOrder2.SampleOrderID);
+            RunSampleOrderAsserts(submittedSampleOrder2, submittedSampleOrder3);
+
+            Assert.AreEqual(submittedSampleOrder2.CustomerAccountNumber, submittedSampleOrder3.CustomerAccountNumber);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterName, submittedSampleOrder3.SubmitterName);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterAddress1, submittedSampleOrder3.SubmitterAddress1);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterAddress2, submittedSampleOrder3.SubmitterAddress2);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterCity, submittedSampleOrder3.SubmitterCity);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterState, submittedSampleOrder3.SubmitterState);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterPostalCode, submittedSampleOrder3.SubmitterPostalCode);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterAccountNumber, submittedSampleOrder3.SubmitterAccountNumber);
+            Assert.AreEqual(submittedSampleOrder2.SubmitterEmail, submittedSampleOrder3.SubmitterEmail);
+            Assert.AreEqual(submittedSampleOrder2.CreatedByAccountNumber, submittedSampleOrder3.CreatedByAccountNumber);
+            Assert.AreEqual(submittedSampleOrder2.UpdatedByAccountNumber, submittedSampleOrder3.UpdatedByAccountNumber);
+            Assert.AreEqual(submittedSampleOrder2.Printed, submittedSampleOrder3.Printed);
+            Assert.AreEqual(submittedSampleOrder2.Received, submittedSampleOrder3.Received);
+            Assert.AreEqual(submittedSampleOrder2.Updated.ToUniversalTime().ToString(), submittedSampleOrder3.Updated.ToUniversalTime().ToString());
+            Assert.AreEqual(submittedSampleOrder2.Created.ToUniversalTime().ToString(), submittedSampleOrder3.Created.ToUniversalTime().ToString());
 
         }
 
