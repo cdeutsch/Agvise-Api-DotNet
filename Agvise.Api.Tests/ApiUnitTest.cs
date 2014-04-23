@@ -37,7 +37,7 @@ namespace Agvise.Api.Tests
                 GrowerPostalCode = "22222",
                 GrowerAccountNumber = "0123456789",
                 GrowerSampler = "Sampler 123",
-                SampleDate = DateTime.UtcNow,
+                SampleDate = DateTime.Now.Date, // only the date is used
                 FieldIdentifier = "123-A",
                 FieldName = "23-A Field",
                 FieldCounty = "Fargo",
