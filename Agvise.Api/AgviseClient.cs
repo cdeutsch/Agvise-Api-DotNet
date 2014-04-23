@@ -25,6 +25,7 @@ namespace Agvise.Api
         {
             var request = new RestRequest("samples/submit/{id}");
             request.RequestFormat = DataFormat.Json;
+            request.DateFormat = "yyyy-MM-ddTHH:mm:ssZ"; // do this so we get the right timezone
             request.AddUrlSegment("id", sampleOrderID.ToString());
             request.Method = Method.GET;
 
@@ -39,6 +40,7 @@ namespace Agvise.Api
         {
             var request = new RestRequest("samples/submit");
             request.RequestFormat = DataFormat.Json;
+            request.DateFormat = "yyyy-MM-ddTHH:mm:ssZ"; // do this so we get the right timezone
             request.Method = Method.POST;
             request.AddBody(sampleOrder);
 
