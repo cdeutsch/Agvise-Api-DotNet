@@ -27,7 +27,7 @@ namespace Agvise.Api.Tests
         [TestMethod]
         public void TestGetSampleSubmissionLabels()
         {
-            byte[] bytes = client.GetSampleSubmissionLabels(new List<long>() { 202083 });
+            byte[] bytes = client.GetSampleSubmissionLabels(new List<long>() { 202083, 202111 });
             Assert.IsTrue(bytes.Length > 0);
             string path = Path.Combine(System.Environment.CurrentDirectory, Guid.NewGuid().ToString() + ".pdf");
             File.WriteAllBytes(path, bytes);
