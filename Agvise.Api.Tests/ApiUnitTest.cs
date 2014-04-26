@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Agvise.Api.Models;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Agvise.Api.Tests
 {
@@ -19,8 +20,20 @@ namespace Agvise.Api.Tests
         [TestMethod]
         public void TestGetSampleSubmission()
         {
-            var submittedSampleOrder = client.GetSampleSubmission(20294);
+            var submittedSampleOrder = client.GetSampleSubmission(202083);
             Assert.IsNotNull(submittedSampleOrder.PKApplication1);
+        }
+
+        [TestMethod]
+        public void TestGetSampleSubmissionLabels()
+        {
+            byte[] bytes = client.GetSampleSubmissionLabels(new List<long>() { 202083 });
+            Assert.IsTrue(bytes.Length > 0);
+            string path = Path.Combine(System.Environment.CurrentDirectory, Guid.NewGuid().ToString() + ".pdf");
+            File.WriteAllBytes(path, bytes);
+            var fileInfo = new FileInfo(path);
+            Assert.IsTrue(fileInfo.Length > 0);
+            fileInfo.Delete();
         }
 
         [TestMethod]

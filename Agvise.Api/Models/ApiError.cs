@@ -10,5 +10,6 @@ namespace Agvise.Api.Models
     {
         public string Message { get; set; }
         public List<string> ValidationErrors { get; set; }
+        public string MessageDetail { get; set; }
     }
 }

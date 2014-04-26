@@ -51,6 +51,22 @@ namespace Agvise.Api
             return response.Data.Data;
         }
 
+        public byte[] GetSampleSubmissionLabels(List<long> sampleOrderIDs)
+        {
+            var request = new RestRequest("samples/submit/labels/");
+            request.RequestFormat = DataFormat.Json;
+            sampleOrderIDs.ForEach(id =>
+                request.AddParameter("id", id, ParameterType.GetOrPost)
+            );
+            request.Method = Method.GET;
+
+            var response = _client.Execute(request);
+
+            response.ThrowExceptionsForErrors();
+
+            return response.RawBytes;
+        }
+
         public RestClient RestClient
         {
             get
