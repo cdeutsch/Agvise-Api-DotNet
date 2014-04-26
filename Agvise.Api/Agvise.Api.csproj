@@ -49,7 +49,11 @@
     <Compile Include="Models\ApiException.cs" />
     <Compile Include="Models\ApiResponse.cs" />
     <Compile Include="Models\Enums.cs" />
+    <Compile Include="Models\ExportRequest.cs" />
+    <Compile Include="Models\ExportResponse.cs" />
+    <Compile Include="Models\ExportStatus.cs" />
     <Compile Include="Models\Sample.cs" />
+    <Compile Include="Models\SampleExport.cs" />
     <Compile Include="Models\ValidValues.cs" />
     <Compile Include="Models\SubmittedSampleOrder.cs" />
     <Compile Include="Models\SampleOrder.cs" />

@@ -174,6 +174,214 @@ namespace Agvise.Api.Tests
 
         }
 
+        [TestMethod]
+        public void TestCreateExport()
+        {
+            var exportRequest = new ExportRequest()
+            {
+                Year = DateTime.UtcNow.Year
+            };
+
+            var exportResponse = client.CreateSampleExport(exportRequest);
+
+            Assert.IsNotNull(exportResponse);
+            Assert.IsTrue(exportResponse.ExportId > 0);
+            Assert.IsNotNull(exportResponse.StatusUrl);
+
+            // check url until ready.
+            int attempts = 0;
+            while (attempts < 20)
+            {
+                attempts += 1;
+                var exportStatus = client.GetSampleExportStatus(exportResponse.ExportId);
+                Assert.IsNotNull(exportStatus);
+                Assert.IsTrue(exportStatus.Status.Length > 0);
+
+                if (exportStatus.Status.Equals("finished", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    break;
+                }
+                else
+                {
+                    System.Threading.Thread.Sleep(2000);
+                }
+            }
+
+            // get results.
+            var sampleExports = client.GetSampleExport(exportResponse.ExportId);
+            Assert.IsNotNull(sampleExports);
+            Assert.IsTrue(sampleExports.Count > 0);
+            foreach (var sampleExport in sampleExports)
+            {
+                Assert.AreEqual(sampleExport.year_Tested, DateTime.UtcNow.Year);
+                Assert.IsTrue(sampleExport.id > 0);
+                Assert.IsTrue(sampleExport.reference_Number.HasValue && sampleExport.reference_Number.Value > 0);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetSampleExportStatuses()
+        {
+            // get results.
+            var exportStatuses = client.GetSampleExportStatuses();
+            Assert.IsNotNull(exportStatuses);
+            Assert.IsTrue(exportStatuses.Count > 0);
+            foreach (var exportStatus in exportStatuses)
+            {
+                Assert.IsNotNull(exportStatus);
+                Assert.IsTrue(exportStatus.Status.Length > 0);
+                Assert.IsTrue(exportStatus.DownloadUrl.Length > 0);
+                Assert.IsTrue(exportStatus.ExportId > 0);
+            }
+        }
+
+        [TestMethod]
+        public void TestGetSample()
+        {
+            // get results.
+            var sampleExport = client.GetSample(2014, 14017626);
+            Assert.IsNotNull(sampleExport);
+            Assert.IsTrue(sampleExport.id > 0);
+            Assert.IsTrue(sampleExport.reference_Number.HasValue && sampleExport.reference_Number.Value > 0);
+
+            Assert.AreEqual(2028432, sampleExport.id);
+            Assert.AreEqual(14017626, sampleExport.reference_Number);
+            Assert.AreEqual("NW12673", sampleExport.lab_Number);
+            Assert.AreEqual(0, sampleExport.grid_Number);
+            Assert.AreEqual("", sampleExport.sample_Description);
+            Assert.IsNull(sampleExport.date_Sampled);
+            Assert.AreEqual(6, sampleExport.depth_Sample_1);
+            Assert.AreEqual(24, sampleExport.depth_Sample_2);
+            Assert.AreEqual(0, sampleExport.depth_Sample_3);
+            Assert.AreEqual(0, sampleExport.depth_Sample_4);
+            Assert.AreEqual(6, sampleExport.depth_Second_Sample_Starting);
+            Assert.AreEqual("0.21", sampleExport.salt_mmhos_1_to_1_Depth_1);
+            Assert.AreEqual("0.45", sampleExport.salt_mmhos_1_to_1_Depth_2);
+            Assert.AreEqual("5.8", sampleExport.pH_1_to_1_Depth_1);
+            Assert.AreEqual("7.4", sampleExport.pH_1_to_1_Depth_2);
+            Assert.AreEqual("0", sampleExport.buffer_pH_Sikora);
+            Assert.AreEqual("0", sampleExport.zinc_ppm_DTPA_S);
+            Assert.AreEqual("0", sampleExport.iron_ppm_DTPA_S);
+            Assert.AreEqual("0.93", sampleExport.copper_ppm_DTPA_S);
+            Assert.AreEqual("0", sampleExport.manganese_ppm_DPTA_S);
+            Assert.AreEqual("0", sampleExport.boron_ppm_DTPA_S);
+            Assert.AreEqual("0", sampleExport.organic_Matter_Percent_LOI);
+            Assert.AreEqual(0, sampleExport.sand_Percentage_Hyd);
+            Assert.AreEqual(0, sampleExport.silt_Percentage_Hyd);
+            Assert.AreEqual(0, sampleExport.clay_Percentage_Hyd);
+            Assert.AreEqual("", sampleExport.bulk_Density_g_cc);
+            Assert.AreEqual("", sampleExport.water_Hold_Capacity_1_3_Bar);
+            Assert.AreEqual(0, sampleExport.water_Soluble_Calcium_ppm);
+            Assert.AreEqual(0, sampleExport.water_Soluble_Potassium_ppm);
+            Assert.AreEqual(0, sampleExport.water_Soluble_Magnesium_ppm);
+            Assert.AreEqual(0, sampleExport.water_Soluble_Sodium_ppm);
+            Assert.AreEqual(0, sampleExport.water_Soluble_Phosphorus_ppm);
+            Assert.AreEqual(0, sampleExport.water_Soluble_Sulfur_ppm);
+            Assert.IsNull(sampleExport.manure_Applied);
+            Assert.AreEqual(0, sampleExport.ammonical_Nitrogen_lb_ac_Depth_1);
+            Assert.AreEqual(0, sampleExport.ammonical_Nitrogen_lb_ac_Depth_2);
+            Assert.AreEqual(0, sampleExport.ammonical_Nitrogen_lb_ac_Depth_3);
+            Assert.AreEqual(0, sampleExport.aluminum_ppm_KCl);
+            Assert.AreEqual("", sampleExport.lab_Comment);
+            Assert.AreEqual(DateTime.Parse("2014-04-09T00:00:00"), sampleExport.date_Received);
+            Assert.AreEqual("Wheat-Winter", sampleExport.crop_Name_1);
+            Assert.AreEqual(90, sampleExport.yield_Goal_1);
+            Assert.AreEqual("Band", sampleExport.guideline_Name_1);
+            Assert.IsNull(sampleExport.crop_Name_2);
+            Assert.AreEqual(0, sampleExport.yield_Goal_2);
+            Assert.AreEqual("", sampleExport.guideline_Name_2);
+            Assert.IsNull(sampleExport.crop_Name_3);
+            Assert.AreEqual(0, sampleExport.yield_Goal_3);
+            Assert.AreEqual("", sampleExport.guideline_Name_3);
+            Assert.AreEqual(2014, sampleExport.year_Tested);
+            Assert.AreEqual("AG0001", sampleExport.billing_Account_Number);
+            Assert.AreEqual("DUCKS UNLIMITED", sampleExport.submitter_Name);
+            Assert.AreEqual("2525 RIVER ROAD", sampleExport.submitter_Address_1);
+            Assert.AreEqual("", sampleExport.submitter_Address_2);
+            Assert.AreEqual("BISMARCK, ND", sampleExport.submitter_City_And_State);
+            Assert.AreEqual("58503", sampleExport.submitter_Postal_Code);
+            Assert.AreEqual(DateTime.Parse("2014-04-10T00:00:00"), sampleExport.date_Reported);
+            Assert.AreEqual("", sampleExport.electronic_ID);
+            Assert.AreEqual(0, sampleExport.number_Of_Grids);
+            Assert.AreEqual(0, sampleExport.solvita_ppm_CO2);
+            Assert.AreEqual("", sampleExport.unique_ID);
+            Assert.AreEqual(0, sampleExport.phosphorus_ppm_M3);
+            Assert.AreEqual("DUCKS UNLIMITED", sampleExport.grower_Name);
+            Assert.AreEqual("2525 RIVER ROAD", sampleExport.grower_Address_1);
+            Assert.AreEqual("", sampleExport.grower_Address_2);
+            Assert.AreEqual("BISMARCK, ND", sampleExport.grower_City_And_State);
+            Assert.AreEqual("58503", sampleExport.grower_Postal_Code);
+            Assert.AreEqual("", sampleExport.field_Name);
+            Assert.AreEqual("NCREC", sampleExport.field_ID);
+            Assert.AreEqual("", sampleExport.county);
+            Assert.AreEqual("", sampleExport.township);
+            Assert.AreEqual("0", sampleExport.section_Number);
+            Assert.AreEqual("", sampleExport.quarter_Description);
+            Assert.AreEqual("", sampleExport.range);
+            Assert.AreEqual("0", sampleExport.acres);
+            Assert.AreEqual("0.0", sampleExport.percent_Saturation_Calcium);
+            Assert.AreEqual("0.0", sampleExport.percent_Saturation_Hydrogn);
+            Assert.AreEqual("0.0", sampleExport.percent_Saturation_Potassium);
+            Assert.AreEqual("0.0", sampleExport.percent_Saturation_Magnesium);
+            Assert.AreEqual("0.0", sampleExport.percent_Saturation_Sodium);
+            Assert.AreEqual("0", sampleExport.calcium_MEQ);
+            Assert.AreEqual("0", sampleExport.calcium_ppm_Am_AC);
+            Assert.AreEqual("0.0", sampleExport.carbonate_Percent_Depth_1);
+            Assert.AreEqual("0.0", sampleExport.carbonate_Percent_Depth_2);
+            Assert.AreEqual("0", sampleExport.ceC_MEQ);
+            Assert.AreEqual("5", sampleExport.chloride_lb_ac_Depth1);
+            Assert.AreEqual("15", sampleExport.chloride_lb_ac_Depth2);
+            Assert.AreEqual("0", sampleExport.hydrogen_MEQ);
+            Assert.AreEqual("0", sampleExport.potassium_MEQ);
+            Assert.AreEqual("538", sampleExport.potassium_ppm_Am_AC);
+            Assert.AreEqual("0", sampleExport.magnesium_MEQ);
+            Assert.AreEqual("0", sampleExport.magnesium_ppm_Am_AC);
+            Assert.AreEqual("16", sampleExport.nitrate_Nitrogen_lb_ac_Depth_1);
+            Assert.AreEqual("27", sampleExport.nitrate_Nitrogen_lb_ac_Depth_2);
+            Assert.AreEqual("0", sampleExport.nitrate_Nitrogen_lb_ac_Depth_3);
+            Assert.AreEqual("0", sampleExport.nitrate_Nitrogen_lb_ac_Depth_4);
+            Assert.AreEqual("43", sampleExport.nitrate_Nitrogen_lb_ac_0_to_24);
+            Assert.AreEqual("0", sampleExport.nitrate_Nitrogen_lb_ac_below_24);
+            Assert.AreEqual("0", sampleExport.sodium_MEQ);
+            Assert.AreEqual("0", sampleExport.sodium_ppm_Am_AC);
+            Assert.AreEqual("0", sampleExport.phosphorus_ppm_Bray_1);
+            Assert.AreEqual("0", sampleExport.phosphorus_ppm_Bray_2);
+            Assert.AreEqual("30", sampleExport.phosphorus_ppm_Olsen);
+            Assert.AreEqual("14", sampleExport.sulfate_Sulfur_lb_ac_Depth_1);
+            Assert.AreEqual("48", sampleExport.sulfate_Sulfur_lb_ac_Depth_2);
+            Assert.IsNull(sampleExport.usdA_Texture_Class);
+            Assert.AreEqual("Wheat-Winter", sampleExport.fertilizerGuideline1.crop);
+            Assert.AreEqual("WINTER_WHEAT", sampleExport.fertilizerGuideline1.crop_Code);
+            Assert.AreEqual("Band", sampleExport.fertilizerGuideline1.guideline);
+            Assert.AreEqual("BND", sampleExport.fertilizerGuideline1.guideline_Code);
+            Assert.AreEqual(90, sampleExport.fertilizerGuideline1.yield_Goal);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.boron_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.boron_Application_Method);
+            Assert.AreEqual("20", sampleExport.fertilizerGuideline1.chloride_To_Apply);
+            Assert.AreEqual("Broadcast", sampleExport.fertilizerGuideline1.chloride_Application_Method);
+            Assert.AreEqual("0", sampleExport.fertilizerGuideline1.copper_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.copper_Application_Method);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.iron_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.iron_Application_Method);
+            Assert.AreEqual("10", sampleExport.fertilizerGuideline1.potassium_To_Apply);
+            Assert.AreEqual("Band (Starter)*", sampleExport.fertilizerGuideline1.potassium_Application_Method);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.lime_To_ApplyTons);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.lime_Application_Method);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.magnesium_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.magnesium_Application_Method);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.manganese_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.manganeseIron_Application_Method);
+            Assert.AreEqual("173", sampleExport.fertilizerGuideline1.nitrogen_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.nitrogen_Application_Method);
+            Assert.AreEqual("15", sampleExport.fertilizerGuideline1.phosphorus_To_Apply);
+            Assert.AreEqual("Band (Starter)*", sampleExport.fertilizerGuideline1.phosphorus_Application_Method);
+            Assert.AreEqual("7", sampleExport.fertilizerGuideline1.sulfur_To_Apply);
+            Assert.AreEqual("Band (Trial)", sampleExport.fertilizerGuideline1.sulfur_Application_Method);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.zinc_To_Apply);
+            Assert.AreEqual("", sampleExport.fertilizerGuideline1.zinc_Application_Method);
+        }
+
+
         private void RunSampleOrderAsserts(SampleOrder expected, SubmittedSampleOrder actual)
         {
             Assert.AreEqual(expected.SampleOrderType, actual.SampleOrderType);

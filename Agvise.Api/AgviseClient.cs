@@ -67,6 +67,76 @@ namespace Agvise.Api
             return response.RawBytes;
         }
 
+        public ExportResponse CreateSampleExport(ExportRequest exportRequest)
+        {
+            var request = new RestRequest("samples/export");
+            request.RequestFormat = DataFormat.Json;
+            request.AddObject(exportRequest);
+            request.Method = Method.POST;
+
+            var response = _client.Execute<ExportResponse>(request);
+
+            response.ThrowExceptionsForErrors();
+
+            return response.Data;
+        }
+
+        public List<ExportStatus> GetSampleExportStatuses()
+        {
+            var request = new RestRequest("samples/export/status");
+            request.RequestFormat = DataFormat.Json;
+            request.Method = Method.GET;
+
+            var response = _client.Execute<List<ExportStatus>>(request);
+
+            response.ThrowExceptionsForErrors();
+
+            return response.Data;
+        }
+
+        public ExportStatus GetSampleExportStatus(long exportId)
+        {
+            var request = new RestRequest("samples/export/status/{id}");
+            request.RequestFormat = DataFormat.Json;
+            request.AddUrlSegment("id", exportId.ToString());
+            request.Method = Method.GET;
+
+            var response = _client.Execute<ExportStatus>(request);
+
+            response.ThrowExceptionsForErrors();
+
+            return response.Data;
+        }
+
+        public List<SampleExport> GetSampleExport(long exportId)
+        {
+            var request = new RestRequest("samples/export/{id}");
+            request.RequestFormat = DataFormat.Json;
+            request.AddUrlSegment("id", exportId.ToString());
+            request.Method = Method.GET;
+
+            var response = _client.Execute<List<SampleExport>>(request);
+
+            response.ThrowExceptionsForErrors();
+
+            return response.Data;
+        }
+
+        public SampleExport GetSample(int year, long referenceNumber)
+        {
+            var request = new RestRequest("samples/{year}/{referenceNumber}");
+            request.RequestFormat = DataFormat.Json;
+            request.AddUrlSegment("year", year.ToString());
+            request.AddUrlSegment("referenceNumber", referenceNumber.ToString());
+            request.Method = Method.GET;
+
+            var response = _client.Execute<SampleExport>(request);
+
+            response.ThrowExceptionsForErrors();
+
+            return response.Data;
+        }
+
         public RestClient RestClient
         {
             get

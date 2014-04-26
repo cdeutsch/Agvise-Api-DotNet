@@ -13,6 +13,15 @@ namespace RestSharp
     {
         public static void ThrowExceptionsForErrors(this IRestResponse response)
         {
+            if (response.ErrorException != null)
+            {
+                throw response.ErrorException;
+            }
+            if (!string.IsNullOrWhiteSpace(response.ErrorMessage))
+            {
+                throw new ApplicationException(response.ErrorMessage);
+            }
+
             if (response.StatusCode != System.Net.HttpStatusCode.OK) {
                 ApiResponse<object> apiResponse = null;
                 try
@@ -29,16 +38,42 @@ namespace RestSharp
                 }
                 else
                 {
-                    throw new ApplicationException(response.Content);
+                    // try parse alternate format.
+                    ApiError apiError = null;
+                    try
+                    {
+                        var jsonDeserializer = new RestSharp.Deserializers.JsonDeserializer();
+                        apiError = jsonDeserializer.Deserialize<ApiError>(response);
+                    }
+                    catch (Exception)
+                    {
+                    }
+                    if (apiError != null && !string.IsNullOrWhiteSpace(apiError.Message))
+                    {
+                        throw new ApiException(new ApiResponse<object>()
+                        {
+                            Error = apiError
+                        });
+                    }
+                    else
+                    {
+                        throw new ApplicationException(response.Content);
+                    }
                 }
-            }
-            if (response.ErrorException != null) {
-                throw response.ErrorException;
             }
         }
 
         public static void ThrowExceptionsForErrors<T>(this IRestResponse<ApiResponse<T>> response)
         {
+            if (response.ErrorException != null)
+            {
+                throw response.ErrorException;
+            }
+            if (!string.IsNullOrWhiteSpace(response.ErrorMessage))
+            {
+                throw new ApplicationException(response.ErrorMessage);
+            }
+
             if (response.StatusCode != System.Net.HttpStatusCode.OK) {
                 if (response.Data != null && response.Data.Error != null) {
                     throw new ApiException(new ApiResponse<object>()
@@ -49,9 +84,6 @@ namespace RestSharp
                 } else {
                     throw new ApplicationException(response.Content);
                 }
-            }
-            if (response.ErrorException != null) {
-                throw response.ErrorException;
             }
         }
     }
