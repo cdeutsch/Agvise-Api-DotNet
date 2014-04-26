@@ -1,8 +1,22 @@
-### AGVISE API Wrapper ###
+## AGVISE API Wrapper ##
 
-See http://submit.agvise.com for more information.
+#### Install
+
+```
+Install-Package Agvise.Api
+```
+
+#### Documentation
+https://submit.agvise.com/docs/api/
+
+#### Your API Key
+https://submit.agvise.com/settings/api
+
 
 ## History 
 
-### 2/23/2014 
+#### 4/26/2014 
+* Updated to support all available Agvise Api endpoints.
+
+#### 2/23/2014 
 * Work in progress
